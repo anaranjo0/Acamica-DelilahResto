@@ -9,6 +9,18 @@ signUpCtlr.read = (req, res) => {
   );
 };
 
+signUpCtlr.readsingle = (req, res) => {
+  try {
+    sequelize.authenticate().then(async () => {
+      const query = "SELECT * FROM `users` WHERE `id`=" + `'${req.params.id}';`;
+      const [resultados] = await sequelize.query(query, { raw: true });
+      res.json(resultados);
+    });
+  } catch (err) {
+    res.json(err);
+  }
+};
+
 signUpCtlr.create = async (req, res) => {
   req.body.password = await bcrypt.hash(req.body.password, 10);
   try {
